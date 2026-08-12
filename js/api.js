@@ -1,5 +1,4 @@
-const API_BASE_URL="https://hostel-backend-new-jgeo.onrender.com/"
-
+const API_BASE_URL = "https://hostel-backend-new-jgeo.onrender.com/api";
 const UPLOADS_BASE_URL = API_BASE_URL.replace(/\/api$/, "");
 
 const Auth = {
