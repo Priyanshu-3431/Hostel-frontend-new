@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile | College Hostel Management System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="dashboard.html" class="nav-brand">🏠 Hostel Portal</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <span style="color:#fff; padding:10px 14px;" id="navStudentName">Student</span>
+      <a href="#" class="btn-nav" id="navLogout">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-layout">
+  <aside class="sidebar">
+    <div class="side-title">Menu</div>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="booking.html">🛏️ Room Book</a>
+    <a href="payment.html">💳 Payment</a>
+    <a href="payment-status.html">📋 Booking Status</a>
+    <a href="receipt.html">🧾 Receipt</a>
+    <a href="profile.html" class="active">👤 Profile</a>
+    <button class="logout-link" id="sideLogout">🚪 Logout</button>
+  </aside>
+
+  <main class="dash-main">
+    <div class="dash-header">
+      <h1>My Profile</h1>
+      <p>Your registered account details.</p>
+    </div>
+
+    <div id="profileLoading" class="spinner"></div>
+
+    <div id="profileContent" class="info-box hidden">
+      <h3>Account Information</h3>
+      <div class="info-grid">
+        <div class="info-item"><div class="label">Full Name</div><div class="value" id="pName">-</div></div>
+        <div class="info-item"><div class="label">Registration Number</div><div class="value" id="pReg">-</div></div>
+        <div class="info-item"><div class="label">Email</div><div class="value" id="pEmail">-</div></div>
+        <div class="info-item"><div class="label">Mobile</div><div class="value" id="pMobile">-</div></div>
+        <div class="info-item"><div class="label">Branch</div><div class="value" id="pBranch">-</div></div>
+        <div class="info-item"><div class="label">Hostel Status</div><div class="value" id="pStatus">-</div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+<script>
+(async function loadProfile() {
+  const res = await api.get("/student/profile");
+  document.getElementById("profileLoading").classList.add("hidden");
+  if (!res.success) {
+    showToast(res.message || "Could not load profile.", "error");
+    return;
+  }
+  const s = res.data;
+  document.getElementById("profileContent").classList.remove("hidden");
+  document.getElementById("pName").textContent = s.name;
+  document.getElementById("pReg").textContent = s.registrationNumber;
+  document.getElementById("pEmail").textContent = s.email;
+  document.getElementById("pMobile").textContent = s.mobile || "-";
+  document.getElementById("pBranch").textContent = s.branch;
+  document.getElementById("pStatus").textContent = s.hostelStatus;
+})();
+</script>
+</body>
+</html>

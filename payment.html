@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment | College Hostel Management System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="dashboard.html" class="nav-brand">🏠 Hostel Portal</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <span style="color:#fff; padding:10px 14px;" id="navStudentName">Student</span>
+      <a href="#" class="btn-nav" id="navLogout">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-layout">
+  <aside class="sidebar">
+    <div class="side-title">Menu</div>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="booking.html">🛏️ Room Book</a>
+    <a href="payment.html" class="active">💳 Payment</a>
+    <a href="payment-status.html">📋 Booking Status</a>
+    <a href="receipt.html">🧾 Receipt</a>
+    <a href="profile.html">👤 Profile</a>
+    <button class="logout-link" id="sideLogout">🚪 Logout</button>
+  </aside>
+
+  <main class="dash-main">
+    <div class="dash-header">
+      <h1>Payment</h1>
+      <p>Pay your hostel fee via UPI and submit your transaction ID.</p>
+    </div>
+
+    <div id="paymentLoading" class="spinner"></div>
+    <div id="noBookingMsg" class="alert alert-info hidden"></div>
+    <div id="alreadySubmitted" class="alert alert-info hidden"></div>
+
+    <div id="paymentContent" class="hidden">
+      <div class="summary-box">
+        <h3 style="color:var(--primary); margin-bottom:16px;">Payment Summary</h3>
+        <div class="summary-row"><span>Student Name</span><span id="pName">-</span></div>
+        <div class="summary-row"><span>Registration Number</span><span id="pReg">-</span></div>
+        <div class="summary-row"><span>Hostel Fee</span><span id="pHostelFee">-</span></div>
+        <div class="summary-row"><span>Mess Fee</span><span id="pMessFee">-</span></div>
+        <div class="summary-row total"><span>Total Amount</span><span id="pTotal">-</span></div>
+
+        <div class="upi-box">
+          <img id="qrImage" src="assets/images/upi-qr-placeholder.png" alt="UPI QR Code">
+          <div class="upi-id">UPI ID: <span id="upiId">-</span></div>
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-top:6px;">Scan & Pay using any UPI app</p>
+        </div>
+
+        <div class="alert alert-error" id="paymentError"></div>
+
+        <form id="paymentForm">
+          <div class="form-group">
+            <label for="utrNumber">UTR / Transaction ID</label>
+            <input type="text" id="utrNumber" placeholder="Enter the UTR number from your UPI payment">
+            <div class="field-error" id="utrNumberError"></div>
+          </div>
+          <button type="submit" class="btn btn-solid btn-block" id="submitPaymentBtn">Submit Payment</button>
+        </form>
+        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:14px; text-align:center;">
+          Your payment will show as <strong>Pending</strong> until an admin verifies your UTR and approves it.
+        </p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/payment.js"></script>
+</body>
+</html>

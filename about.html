@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | College Hostel Management System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">🏠 Hostel Portal</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="register.html">Student Register</a>
+      <a href="login.html">Student Login</a>
+      <a href="admin-login.html" class="btn-nav">Admin Login</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <h1>About Our Hostel</h1>
+  <p>Comfortable, safe and student-friendly living, built for focused college life.</p>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="grid" style="grid-template-columns: 1fr 1fr; align-items: center; margin-bottom: 60px;">
+      <div>
+        <h2 class="section-title" style="text-align:left;">About College Hostel</h2>
+        <p style="color:var(--text-muted)">Our college hostel provides a safe, comfortable and disciplined living environment for students from all branches. With modern rooms, nutritious mess food, round-the-clock security and dedicated student support, we aim to make hostel life as smooth as academic life.</p>
+      </div>
+      <img src="assets/images/" alt="Hostel building" style="border-radius:12px; box-shadow: var(--shadow-lg);">
+    </div>
+
+    <h2 class="section-title">Facilities</h2>
+    <p class="section-subtitle">Everything you need, on campus.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="icon">🏢</div>
+        <h3>Hostel Facilities</h3>
+        <p>24/7 power backup, high-speed Wi-Fi, common recreation room, laundry service, and hot water supply.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🛏️</div>
+        <h3>Room Facilities</h3>
+        <p>Spacious rooms with study tables, wardrobes, ceiling fans, and comfortable beds for 2–3 students per room.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🍽️</div>
+        <h3>Mess Facilities</h3>
+        <p>Hygienic, nutritious meals three times a day with a rotating weekly menu and separate vegetarian options.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🛡️</div>
+        <h3>Security</h3>
+        <p>Gated entry with biometric/ID verification, CCTV surveillance, and on-site security staff round the clock.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🤝</div>
+        <h3>Student Support</h3>
+        <p>A dedicated warden and support desk to help with grievances, maintenance requests, and emergencies.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📋</div>
+        <h3>Hostel Rules</h3>
+        <p>Entry/exit curfew timings, visitor policy, ragging-free campus, and a code of conduct for a safe community.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="info-box">
+      <h3>Contact Information</h3>
+      <div class="info-grid">
+        <div class="info-item"><div class="label">Phone</div><div class="value" id="aboutPhone">Loading...</div></div>
+        <div class="info-item"><div class="label">Email</div><div class="value" id="aboutEmail">Loading...</div></div>
+        <div class="info-item"><div class="label">Address</div><div class="value" id="aboutAddress">Loading...</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Contact</a>
+    <a href="register.html">Register</a>
+  </div>
+  <small>&copy; <span id="year"></span> College Hostel Management System. Develop by priyanshu.</small>
+</footer>
+
+<script src="js/api.js"></script>
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+(async function loadContactInfo() {
+  const res = await api.get("/settings", false);
+  if (res.success && res.data) {
+    document.getElementById("aboutPhone").textContent = res.data.contactNumber || "-";
+    document.getElementById("aboutEmail").textContent = res.data.email || "-";
+    document.getElementById("aboutAddress").textContent = res.data.address || "-";
+  } else {
+    document.getElementById("aboutPhone").textContent = "-";
+    document.getElementById("aboutEmail").textContent = "-";
+    document.getElementById("aboutAddress").textContent = "-";
+  }
+})();
+</script>
+</body>
+</html>

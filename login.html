@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Login | College Hostel Management System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">🏠 Hostel Portal</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="register.html">Student Register</a>
+      <a href="login.html" class="active">Student Login</a>
+      <a href="admin-login.html" class="btn-nav">Admin Login</a>
+    </div>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <div class="form-wrap">
+      <h2>Student Login</h2>
+      <p class="sub">Login to access your hostel dashboard</p>
+
+      <div class="alert alert-error" id="errorAlert"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="identifier">Email or Registration Number</label>
+          <input type="text" id="identifier" placeholder="you@example.com or reg. number">
+          <div class="field-error" id="identifierError"></div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Your password">
+          <div class="field-error" id="passwordError"></div>
+        </div>
+        <button type="submit" class="btn btn-solid btn-block" id="submitBtn">Login</button>
+      </form>
+
+      <div class="form-footer">
+        Don't have an account? <a href="register.html" style="color:var(--primary); font-weight:600;">Register here</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Contact</a>
+    <a href="register.html">Register</a>
+  </div>
+  <small>&copy; <span id="year"></span> College Hostel Management System. All rights reserved.</small>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

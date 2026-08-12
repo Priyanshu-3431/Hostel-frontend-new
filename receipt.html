@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Receipt | College Hostel Management System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="dashboard.html" class="nav-brand">🏠 Hostel Portal</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <span style="color:#fff; padding:10px 14px;" id="navStudentName">Student</span>
+      <a href="#" class="btn-nav" id="navLogout">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-layout">
+  <aside class="sidebar">
+    <div class="side-title">Menu</div>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="booking.html">🛏️ Room Book</a>
+    <a href="payment.html">💳 Payment</a>
+    <a href="payment-status.html">📋 Booking Status</a>
+    <a href="receipt.html" class="active">🧾 Receipt</a>
+    <a href="profile.html">👤 Profile</a>
+    <button class="logout-link" id="sideLogout">🚪 Logout</button>
+  </aside>
+
+  <main class="dash-main">
+    <div class="dash-header">
+      <h1>Receipt</h1>
+      <p>Download your official payment receipt after admin approval.</p>
+    </div>
+
+    <div id="receiptLoading" class="spinner"></div>
+    <div id="receiptMsg" class="alert alert-info hidden"></div>
+
+    <div id="receiptContent" class="hidden">
+      <div class="summary-box" style="text-align:center;">
+        <div class="icon" style="margin:0 auto 16px; width:60px; height:60px; font-size:1.8rem;">🧾</div>
+        <h3 style="color:var(--primary); margin-bottom:8px;">Receipt Number: <span id="receiptNum">-</span></h3>
+        <p style="color:var(--text-muted); margin-bottom:20px;">Your payment has been approved. You can download your official receipt below.</p>
+        <button class="btn btn-success" id="downloadBtn">⬇ Download Receipt (PDF)</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+<script>
+(async function loadReceipt() {
+  const loading = document.getElementById("receiptLoading");
+  const msg = document.getElementById("receiptMsg");
+  const content = document.getElementById("receiptContent");
+
+  const res = await api.get("/payments/my-payment");
+  loading.classList.add("hidden");
+
+  if (!res.success || !res.data) {
+    msg.classList.remove("hidden");
+    msg.innerHTML = `No payment found. Please complete <a href="booking.html" style="color:var(--primary); font-weight:600;">booking</a> and <a href="payment.html" style="color:var(--primary); font-weight:600;">payment</a> first.`;
+    return;
+  }
+
+  const payment = res.data;
+
+  if (payment.paymentStatus !== "Approved") {
+    msg.classList.remove("hidden");
+    msg.textContent = `Your receipt will be available once the admin approves your payment. Current status: ${payment.paymentStatus}.`;
+    return;
+  }
+
+  content.classList.remove("hidden");
+  document.getElementById("receiptNum").textContent = payment.receiptNumber || "-";
+
+  document.getElementById("downloadBtn").addEventListener("click", async () => {
+    const btn = document.getElementById("downloadBtn");
+    btn.disabled = true;
+    btn.textContent = "Preparing...";
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/receipt/${payment._id}`, {
+        headers: { Authorization: `Bearer ${Auth.getToken()}` },
+      });
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        showToast(data.message || "Could not generate receipt.", "error");
+      } else {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Receipt-${payment.receiptNumber}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      }
+    } catch (err) {
+      showToast("Unable to reach the server. Please try again.", "error");
+    }
+
+    btn.disabled = false;
+    btn.textContent = "⬇ Download Receipt (PDF)";
+  });
+})();
+</script>
+</body>
+</html>

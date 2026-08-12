@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard | College Hostel Management System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="dashboard.html" class="nav-brand">🏠 Hostel Portal</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <span style="color:#fff; padding:10px 14px;" id="navStudentName">Student</span>
+      <a href="#" class="btn-nav" id="navLogout">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-layout">
+  <aside class="sidebar">
+    <div class="side-title">Menu</div>
+    <a href="dashboard.html" class="active">📊 Dashboard</a>
+    <a href="booking.html">🛏️ Room Book</a>
+    <a href="payment.html">💳 Payment</a>
+    <a href="payment-status.html">📋 Booking Status</a>
+    <a href="receipt.html">🧾 Receipt</a>
+    <a href="profile.html">👤 Profile</a>
+    <button class="logout-link" id="sideLogout">🚪 Logout</button>
+  </aside>
+
+  <main class="dash-main">
+    <div class="dash-header">
+      <h1>Welcome, <span id="welcomeName">Student</span></h1>
+      <p>Here's an overview of your hostel status.</p>
+    </div>
+
+    <div id="dashLoading" class="spinner"></div>
+
+    <div id="dashContent" class="hidden">
+      <div class="info-box">
+        <h3>Your Details</h3>
+        <div class="info-grid">
+          <div class="info-item"><div class="label">Student Name</div><div class="value" id="infoName">-</div></div>
+          <div class="info-item"><div class="label">Registration Number</div><div class="value" id="infoReg">-</div></div>
+          <div class="info-item"><div class="label">Email</div><div class="value" id="infoEmail">-</div></div>
+          <div class="info-item"><div class="label">Branch</div><div class="value" id="infoBranch">-</div></div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <h3>Status Overview</h3>
+        <div class="info-grid">
+          <div class="info-item"><div class="label">Hostel Status</div><div class="value"><span class="badge" id="hostelStatus">-</span></div></div>
+          <div class="info-item"><div class="label">Room / Booking Status</div><div class="value"><span class="badge" id="bookingStatus">-</span></div></div>
+          <div class="info-item"><div class="label">Payment Status</div><div class="value"><span class="badge" id="paymentStatus">-</span></div></div>
+        </div>
+      </div>
+
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <a href="booking.html" class="card" style="text-align:center;">
+          <div class="icon" style="margin:0 auto 14px;">🛏️</div>
+          <h3>Book a Room</h3>
+          <p>View fees and book your hostel room.</p>
+        </a>
+        <a href="payment.html" class="card" style="text-align:center;">
+          <div class="icon" style="margin:0 auto 14px;">💳</div>
+          <h3>Make Payment</h3>
+          <p>Pay via UPI and submit your UTR.</p>
+        </a>
+        <a href="receipt.html" class="card" style="text-align:center;">
+          <div class="icon" style="margin:0 auto 14px;">🧾</div>
+          <h3>Download Receipt</h3>
+          <p>Get your receipt after approval.</p>
+        </a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

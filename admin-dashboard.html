@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | College Hostel Management System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="admin-dashboard.html" class="nav-brand">🏠 Hostel Portal — Admin</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <span style="color:#fff; padding:10px 14px;" id="navAdminName">Admin</span>
+      <a href="#" class="btn-nav" id="navLogout">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-layout">
+  <aside class="sidebar">
+    <div class="side-title">Admin Menu</div>
+    <a href="#" class="admin-nav-link active" data-view="overview">📊 Dashboard</a>
+    <a href="#" class="admin-nav-link" data-view="students">🎓 Students</a>
+    <a href="#" class="admin-nav-link" data-view="bookings">🛏️ Bookings</a>
+    <a href="#" class="admin-nav-link" data-view="payments">💳 Payments</a>
+    <a href="#" class="admin-nav-link" data-view="contact">✉️ Messages</a>
+    <a href="#" class="admin-nav-link" data-view="gallery">🖼️ Gallery</a>
+    <a href="#" class="admin-nav-link" data-view="settings">⚙️ Settings</a>
+    <button class="logout-link" id="sideLogout">🚪 Logout</button>
+  </aside>
+
+  <main class="dash-main">
+
+    <!-- OVERVIEW -->
+    <section class="admin-view" id="view-overview">
+      <div class="dash-header"><h1>Admin Dashboard</h1><p>Overview of hostel operations.</p></div>
+      <div id="overviewLoading" class="spinner"></div>
+      <div class="stat-cards hidden" id="statCards">
+        <div class="stat-card"><div class="stat-value" id="statStudents">0</div><div class="stat-label">Total Students</div></div>
+        <div class="stat-card"><div class="stat-value" id="statBookings">0</div><div class="stat-label">Total Bookings</div></div>
+        <div class="stat-card"><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending Payments</div></div>
+        <div class="stat-card"><div class="stat-value" id="statApproved">0</div><div class="stat-label">Approved Payments</div></div>
+        <div class="stat-card"><div class="stat-value" id="statRejected">0</div><div class="stat-label">Rejected Payments</div></div>
+        <div class="stat-card"><div class="stat-value" id="statMessages">0</div><div class="stat-label">Contact Messages</div></div>
+      </div>
+    </section>
+
+    <!-- STUDENTS -->
+    <section class="admin-view hidden" id="view-students">
+      <div class="dash-header"><h1>Students</h1><p>All registered students.</p></div>
+      <div class="table-toolbar">
+        <input type="text" id="studentSearch" placeholder="Search by name, reg no. or email">
+        <select id="studentBranchFilter">
+          <option value="">All Branches</option>
+          <option value="AI & ML">AI & ML</option>
+          <option value="Civil Engineering">Civil Engineering</option>
+          <option value="Electronics Engineering">Electronics Engineering</option>
+          <option value="Mechanical Engineering">Mechanical Engineering</option>
+        </select>
+        <select id="studentPaymentFilter">
+          <option value="">All Payment Status</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+          <option value="No Payment">No Payment</option>
+        </select>
+        <select id="studentBookingFilter">
+          <option value="">All Booking Status</option>
+          <option value="Pending">Pending</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Rejected">Rejected</option>
+          <option value="No Booking">No Booking</option>
+        </select>
+        <button class="btn btn-solid btn-sm" id="studentFilterBtn">Filter</button>
+      </div>
+      <div id="studentsLoading" class="spinner"></div>
+      <div class="table-wrap hidden" id="studentsTableWrap">
+        <table>
+          <thead><tr><th>Name</th><th>Reg. No.</th><th>Email</th><th>Branch</th><th>Reg. Date</th><th>Hostel Status</th><th>Booking</th><th>Payment</th></tr></thead>
+          <tbody id="studentsTableBody"></tbody>
+        </table>
+      </div>
+      <div id="studentsEmpty" class="center-pad hidden">No students found.</div>
+    </section>
+
+    <!-- BOOKINGS -->
+    <section class="admin-view hidden" id="view-bookings">
+      <div class="dash-header"><h1>Bookings</h1><p>All room booking requests.</p></div>
+      <div class="table-toolbar">
+        <input type="text" id="bookingSearch" placeholder="Search by name or reg. no.">
+        <select id="bookingStatusFilter">
+          <option value="">All Status</option>
+          <option value="Pending">Pending</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+        <button class="btn btn-solid btn-sm" id="bookingFilterBtn">Filter</button>
+      </div>
+      <div id="bookingsLoading" class="spinner"></div>
+      <div class="table-wrap hidden" id="bookingsTableWrap">
+        <table>
+          <thead><tr><th>Student</th><th>Reg. No.</th><th>Branch</th><th>Hostel Fee</th><th>Mess Fee</th><th>Total</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="bookingsTableBody"></tbody>
+        </table>
+      </div>
+      <div id="bookingsEmpty" class="center-pad hidden">No bookings found.</div>
+    </section>
+
+    <!-- PAYMENTS -->
+    <section class="admin-view hidden" id="view-payments">
+      <div class="dash-header"><h1>Payments</h1><p>Verify UTR numbers and approve/reject payments.</p></div>
+      <div class="table-toolbar">
+        <input type="text" id="paymentSearch" placeholder="Search by name, reg. no. or UTR">
+        <select id="paymentStatusFilter">
+          <option value="">All Status</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+        <button class="btn btn-solid btn-sm" id="paymentFilterBtn">Filter</button>
+      </div>
+      <div id="paymentsLoading" class="spinner"></div>
+      <div class="table-wrap hidden" id="paymentsTableWrap">
+        <table>
+          <thead><tr><th>Student</th><th>Reg. No.</th><th>Branch</th><th>Amount</th><th>UTR No.</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="paymentsTableBody"></tbody>
+        </table>
+      </div>
+      <div id="paymentsEmpty" class="center-pad hidden">No payments found.</div>
+    </section>
+
+    <!-- CONTACT MESSAGES -->
+    <section class="admin-view hidden" id="view-contact">
+      <div class="dash-header"><h1>Contact Messages</h1><p>Messages submitted through the Contact page.</p></div>
+      <div id="contactLoading" class="spinner"></div>
+      <div class="table-wrap hidden" id="contactTableWrap">
+        <table>
+          <thead><tr><th>Name</th><th>Email</th><th>Mobile</th><th>Message</th><th>Date</th></tr></thead>
+          <tbody id="contactTableBody"></tbody>
+        </table>
+      </div>
+      <div id="contactEmpty" class="center-pad hidden">No messages yet.</div>
+    </section>
+
+    <!-- GALLERY MANAGEMENT -->
+    <section class="admin-view hidden" id="view-gallery">
+      <div class="dash-header"><h1>Gallery Management</h1><p>Upload and manage hostel gallery images.</p></div>
+
+      <div class="info-box">
+        <h3>Upload New Image</h3>
+        <div class="alert alert-error" id="galleryUploadError"></div>
+        <form id="galleryUploadForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="galleryTitle">Image Title</label>
+              <input type="text" id="galleryTitle" placeholder="e.g. Hostel Front View">
+            </div>
+            <div class="form-group">
+              <label for="galleryFile">Image File</label>
+              <input type="file" id="galleryFile" accept="image/*">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="galleryDesc">Caption / Description (optional)</label>
+            <input type="text" id="galleryDesc" placeholder="Short description">
+          </div>
+          <button type="submit" class="btn btn-solid" id="galleryUploadBtn">Upload Image</button>
+        </form>
+      </div>
+
+      <div id="galleryMgmtLoading" class="spinner"></div>
+      <div class="gallery-grid" id="galleryMgmtGrid"></div>
+      <div id="galleryMgmtEmpty" class="center-pad hidden">No images uploaded yet.</div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="admin-view hidden" id="view-settings">
+      <div class="dash-header"><h1>Settings</h1><p>Configure college and hostel information.</p></div>
+      <div id="settingsLoading" class="spinner"></div>
+      <div class="info-box hidden" id="settingsBox">
+        <div class="alert alert-success" id="settingsSuccess"></div>
+        <div class="alert alert-error" id="settingsError"></div>
+        <form id="settingsForm">
+          <div class="form-row">
+            <div class="form-group"><label for="collegeName">College Name</label><input type="text" id="collegeName"></div>
+            <div class="form-group"><label for="hostelName">Hostel Name</label><input type="text" id="hostelName"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label for="hostelFee">Hostel Fee (₹)</label><input type="number" id="hostelFee" min="0"></div>
+            <div class="form-group"><label for="messFee">Mess Fee (₹)</label><input type="number" id="messFee" min="0"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label for="upiId">College UPI ID</label><input type="text" id="upiId"></div>
+            <div class="form-group"><label for="contactNumber">Contact Number</label><input type="text" id="contactNumber"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label for="settingsEmail">Contact Email</label><input type="email" id="settingsEmail"></div>
+            <div class="form-group"><label for="address">Address</label><input type="text" id="address"></div>
+          </div>
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:14px;">
+            Logo, background image and QR code file uploads can be wired to the gallery upload endpoint or served as static assets — set their URLs below if hosted elsewhere.
+          </p>
+          <div class="form-row">
+            <div class="form-group"><label for="logo">Logo URL</label><input type="text" id="logo" placeholder="/uploads/gallery/logo.png"></div>
+            <div class="form-group"><label for="backgroundImage">Background Image URL</label><input type="text" id="backgroundImage"></div>
+          </div>
+          <div class="form-group"><label for="qrCode">UPI QR Code Image URL</label><input type="text" id="qrCode" placeholder="/uploads/gallery/qr.png"></div>
+          <button type="submit" class="btn btn-solid" id="settingsSaveBtn">Save Settings</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Remark modal for approve/reject actions -->
+<div class="modal-backdrop" id="remarkModal">
+  <div class="modal-box">
+    <h3 id="remarkModalTitle">Add Remark</h3>
+    <div class="form-group">
+      <label for="remarkInput">Remark (optional)</label>
+      <textarea id="remarkInput" placeholder="e.g. UTR verified against bank statement"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" style="color:var(--primary); border-color:var(--primary);" id="remarkCancel">Cancel</button>
+      <button class="btn btn-solid" id="remarkConfirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

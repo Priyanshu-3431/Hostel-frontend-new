@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact | College Hostel Management System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">🏠 Hostel Portal</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html" class="active">Contact</a>
+      <a href="register.html">Student Register</a>
+      <a href="login.html">Student Login</a>
+      <a href="admin-login.html" class="btn-nav">Admin Login</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <h1>Get in Touch</h1>
+  <p>Have a question? Send us a message and we'll get back to you.</p>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="form-wrap">
+      <h2>Contact Us</h2>
+      <p class="sub">Fill in the form below</p>
+
+      <div class="alert alert-success" id="successAlert"></div>
+      <div class="alert alert-error" id="errorAlert"></div>
+
+      <form id="contactForm" novalidate>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your full name">
+          <div class="field-error" id="nameError"></div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com">
+          <div class="field-error" id="emailError"></div>
+        </div>
+        <div class="form-group">
+          <label for="mobile">Mobile Number</label>
+          <input type="tel" id="mobile" name="mobile" placeholder="10-digit mobile number">
+          <div class="field-error" id="mobileError"></div>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="How can we help you?"></textarea>
+          <div class="field-error" id="messageError"></div>
+        </div>
+        <button type="submit" class="btn btn-solid btn-block" id="submitBtn">Submit</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Contact</a>
+    <a href="register.html">Register</a>
+  </div>
+  <small>&copy; <span id="year"></span> College Hostel Management System. All rights reserved.</small>
+</footer>
+
+<script src="js/api.js"></script>
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+const form = document.getElementById("contactForm");
+const successAlert = document.getElementById("successAlert");
+const errorAlert = document.getElementById("errorAlert");
+
+function clearErrors() {
+  document.querySelectorAll(".field-error").forEach(el => { el.classList.remove("show"); el.textContent = ""; });
+  successAlert.classList.remove("show");
+  errorAlert.classList.remove("show");
+}
+
+function fieldError(id, msg) {
+  const el = document.getElementById(id + "Error");
+  el.textContent = msg;
+  el.classList.add("show");
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  clearErrors();
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const mobile = document.getElementById("mobile").value.trim();
+  const message = document.getElementById("message").value.trim();
+
+  let valid = true;
+  if (!name) { fieldError("name", "Name is required."); valid = false; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fieldError("email", "Please enter a valid email address."); valid = false; }
+  if (!/^[0-9]{10}$/.test(mobile)) { fieldError("mobile", "Please enter a valid 10-digit mobile number."); valid = false; }
+  if (!message) { fieldError("message", "Message is required."); valid = false; }
+  if (!valid) return;
+
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true;
+  btn.textContent = "Sending...";
+
+  const res = await api.post("/contact", { name, email, mobile, message }, false);
+
+  btn.disabled = false;
+  btn.textContent = "Submit";
+
+  if (res.success) {
+    successAlert.textContent = res.message || "Your message has been sent successfully.";
+    successAlert.classList.add("show");
+    form.reset();
+  } else {
+    errorAlert.textContent = res.message || "Something went wrong. Please try again.";
+    errorAlert.classList.add("show");
+  }
+});
+</script>
+</body>
+</html>

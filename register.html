@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Register | College Hostel Management System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">🏠 Hostel Portal</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="register.html" class="active">Student Register</a>
+      <a href="login.html">Student Login</a>
+      <a href="admin-login.html" class="btn-nav">Admin Login</a>
+    </div>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <div class="form-wrap wide">
+      <h2>Student Registration</h2>
+      <p class="sub">Create your hostel account</p>
+
+      <div class="alert alert-success" id="successAlert"></div>
+      <div class="alert alert-error" id="errorAlert"></div>
+
+      <form id="registerForm" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" placeholder="Your full name">
+            <div class="field-error" id="nameError"></div>
+          </div>
+          <div class="form-group">
+            <label for="registrationNumber">Registration Number</label>
+            <input type="text" id="registrationNumber" placeholder="e.g. 2026CS0123">
+            <div class="field-error" id="registrationNumberError"></div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="you@example.com">
+            <div class="field-error" id="emailError"></div>
+          </div>
+          <div class="form-group">
+            <label for="mobile">Mobile Number (optional)</label>
+            <input type="tel" id="mobile" placeholder="10-digit mobile number">
+            <div class="field-error" id="mobileError"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="branch">Branch</label>
+          <select id="branch">
+            <option value="">Select your branch</option>
+            <option value="AI & ML">AI & ML</option>
+            <option value="Civil Engineering">Civil Engineering</option>
+            <option value="Electronics Engineering">Electronics Engineering</option>
+            <option value="Mechanical Engineering">Mechanical Engineering</option>
+          </select>
+          <div class="field-error" id="branchError"></div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Min. 8 characters, letters & numbers">
+            <div class="field-error" id="passwordError"></div>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" placeholder="Re-enter your password">
+            <div class="field-error" id="confirmPasswordError"></div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-solid btn-block" id="submitBtn">Register</button>
+      </form>
+
+      <div class="form-footer">
+        Already have an account? <a href="login.html" style="color:var(--primary); font-weight:600;">Login here</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Contact</a>
+    <a href="register.html">Register</a>
+  </div>
+  <small>&copy; <span id="year"></span> College Hostel Management System. All rights reserved.</small>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

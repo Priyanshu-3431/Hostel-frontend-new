@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Status | College Hostel Management System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="dashboard.html" class="nav-brand">🏠 Hostel Portal</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <span style="color:#fff; padding:10px 14px;" id="navStudentName">Student</span>
+      <a href="#" class="btn-nav" id="navLogout">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-layout">
+  <aside class="sidebar">
+    <div class="side-title">Menu</div>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="booking.html">🛏️ Room Book</a>
+    <a href="payment.html">💳 Payment</a>
+    <a href="payment-status.html" class="active">📋 Booking Status</a>
+    <a href="receipt.html">🧾 Receipt</a>
+    <a href="profile.html">👤 Profile</a>
+    <button class="logout-link" id="sideLogout">🚪 Logout</button>
+  </aside>
+
+  <main class="dash-main">
+    <div class="dash-header">
+      <h1>Booking & Payment Status</h1>
+      <p>Track the progress of your room booking and payment.</p>
+    </div>
+
+    <div id="statusLoading" class="spinner"></div>
+    <div id="noBookingMsg" class="alert alert-info hidden"></div>
+
+    <div id="statusContent" class="hidden">
+      <div class="info-box">
+        <h3>Booking</h3>
+        <div class="info-grid">
+          <div class="info-item"><div class="label">Hostel Fee</div><div class="value" id="sHostelFee">-</div></div>
+          <div class="info-item"><div class="label">Mess Fee</div><div class="value" id="sMessFee">-</div></div>
+          <div class="info-item"><div class="label">Total Amount</div><div class="value" id="sTotal">-</div></div>
+          <div class="info-item"><div class="label">Booking Date</div><div class="value" id="sBookingDate">-</div></div>
+          <div class="info-item"><div class="label">Booking Status</div><div class="value"><span class="badge" id="sBookingStatus">-</span></div></div>
+          <div class="info-item"><div class="label">Admin Remark</div><div class="value" id="sBookingRemark">-</div></div>
+        </div>
+      </div>
+
+      <div class="info-box" id="paymentBox">
+        <h3>Payment</h3>
+        <div id="noPaymentMsg" class="center-pad hidden">No payment submitted yet.</div>
+        <div class="info-grid" id="paymentInfoGrid">
+          <div class="info-item"><div class="label">Amount</div><div class="value" id="sAmount">-</div></div>
+          <div class="info-item"><div class="label">UTR Number</div><div class="value" id="sUtr">-</div></div>
+          <div class="info-item"><div class="label">Payment Date</div><div class="value" id="sPaymentDate">-</div></div>
+          <div class="info-item"><div class="label">Payment Status</div><div class="value"><span class="badge" id="sPaymentStatus">-</span></div></div>
+          <div class="info-item"><div class="label">Admin Remark</div><div class="value" id="sPaymentRemark">-</div></div>
+        </div>
+        <div id="retryPaymentWrap" class="hidden" style="margin-top:18px;">
+          <a href="payment.html" class="btn btn-solid">Re-submit Payment</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+<script>
+(async function loadStatus() {
+  const loading = document.getElementById("statusLoading");
+  const content = document.getElementById("statusContent");
+  const noBookingMsg = document.getElementById("noBookingMsg");
+
+  const bookingRes = await api.get("/bookings/my-booking");
+  const paymentRes = await api.get("/payments/my-payment");
+
+  loading.classList.add("hidden");
+
+  if (!bookingRes.success || !bookingRes.data) {
+    noBookingMsg.classList.remove("hidden");
+    noBookingMsg.innerHTML = `You don't have a booking yet. <a href="booking.html" style="color:var(--primary); font-weight:600;">Book a room</a> to get started.`;
+    return;
+  }
+
+  content.classList.remove("hidden");
+  const booking = bookingRes.data;
+  const payment = paymentRes.success ? paymentRes.data : null;
+
+  document.getElementById("sHostelFee").textContent = currency(booking.hostelFee);
+  document.getElementById("sMessFee").textContent = currency(booking.messFee);
+  document.getElementById("sTotal").textContent = currency(booking.totalAmount);
+  document.getElementById("sBookingDate").textContent = formatDateTime(booking.createdAt);
+  const bStatusEl = document.getElementById("sBookingStatus");
+  bStatusEl.textContent = booking.bookingStatus;
+  bStatusEl.className = "badge " + badgeClass(booking.bookingStatus);
+  document.getElementById("sBookingRemark").textContent = booking.adminRemark || "-";
+
+  if (!payment) {
+    document.getElementById("noPaymentMsg").classList.remove("hidden");
+    document.getElementById("paymentInfoGrid").classList.add("hidden");
+  } else {
+    document.getElementById("sAmount").textContent = currency(payment.amount);
+    document.getElementById("sUtr").textContent = payment.utrNumber;
+    document.getElementById("sPaymentDate").textContent = formatDateTime(payment.paymentDate);
+    const pStatusEl = document.getElementById("sPaymentStatus");
+    pStatusEl.textContent = payment.paymentStatus;
+    pStatusEl.className = "badge " + badgeClass(payment.paymentStatus);
+    document.getElementById("sPaymentRemark").textContent = payment.adminRemark || "-";
+
+    if (payment.paymentStatus === "Rejected") {
+      document.getElementById("retryPaymentWrap").classList.remove("hidden");
+    }
+  }
+})();
+</script>
+</body>
+</html>
