@@ -1,14 +1,7 @@
-/* ============================================================
-   Global API + auth helpers shared by every page.
-   Configure the backend base URL here if it's not on localhost:5000.
-   ============================================================ */
-const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-  ? "http://localhost:5000/api"
-  : "/api"; // adjust if the backend is deployed to a different host
+const API_BASE_URL="https://hostel-backend-new-jgeo.onrender.com/"
 
 const UPLOADS_BASE_URL = API_BASE_URL.replace(/\/api$/, "");
 
-/* ---------- Token / session storage ---------- */
 const Auth = {
   setSession(token, user) {
     localStorage.setItem("hms_token", token);
